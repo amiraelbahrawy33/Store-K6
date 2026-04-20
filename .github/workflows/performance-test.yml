@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
-    
+
 jobs:
   k6-test:
     runs-on: ubuntu-latest
@@ -28,6 +28,7 @@ jobs:
           filename: scripts/user_journey.js # Make sure this path is correct
 
       - name: Upload HTML Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: k6-report

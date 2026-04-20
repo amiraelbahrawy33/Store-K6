@@ -17,6 +17,8 @@ export function login(baseURL, email, password) {
   };
 
   const response = http.post(url, payload, {...params,tags:{name:"login"}});
+  // console.log(response.body);
+
   const isSuccessful= check(response, { "Login is done successfully": (r) => r.status === 200 },
 );
 

@@ -1,6 +1,6 @@
 import { sleep, group, check } from "k6";
 import { login } from "../modules/auth.js";
-import http from "k6/http";
+import http, { request } from "k6/http";
 import { htmlReport } from "https://raw.githubusercontent.com/benc-uk/k6-reporter/main/dist/bundle.js";
 import { textSummary } from "https://jslib.k6.io/k6-summary/0.0.1/index.js";
 import { SharedArray } from 'k6/data'; 
@@ -14,9 +14,9 @@ const csvData = new SharedArray('users', function () {
 
 export const options = {
   stages: [
-    { duration: "30s", target: 5 },
-    { duration: "2m", target: 5 },
-    { duration: "30s", target: 0 },
+    { duration: "1m", target: 10 },
+    { duration: "5m", target: 10 },
+    { duration: "1m", target: 0 },
   ],
   thresholds: {
     "http_req_duration{name:login}": ["p(95)<1000"],
@@ -52,7 +52,9 @@ export default function () {
       },
     };
     const response = http.get(getMenuURL, {... params ,tags:{name:"menu"}});
+// console.log(response.body);
 
+// console.log(request.body)
     check(response, {
       "Getting Menu status is 200": (r) => r.status === 200,
       "Menu has content": (r) => r.body.length > 0,
