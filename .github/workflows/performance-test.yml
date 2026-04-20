@@ -31,3 +31,4 @@ jobs:
         with:
           name: k6-report
           path: summaryReport.html # This matches your handleSummary filename
+          
