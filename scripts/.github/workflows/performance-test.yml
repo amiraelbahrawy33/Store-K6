@@ -1,0 +1,33 @@
+name: Performance Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  k6-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create data directory
+        run: mkdir -p data
+
+      # This is Option A: Creating the CSV from the Secret
+      - name: Create users.csv from Secret
+        run: echo "${{ secrets.K6_USER_DATA }}" > data/users.csv
+
+      - name: Run k6 test
+        uses: grafana/k6-action@v0.3.1
+        with:
+          filename: scripts/user_journey.js # Make sure this path is correct
+
+      - name: Upload HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: k6-report
+          path: summaryReport.html # This matches your handleSummary filename
