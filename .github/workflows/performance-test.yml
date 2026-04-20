@@ -2,10 +2,11 @@ name: Performance Test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
-
+    branches: [ main ]
+  workflow_dispatch:
+    
 jobs:
   k6-test:
     runs-on: ubuntu-latest
